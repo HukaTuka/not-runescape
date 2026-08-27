@@ -1,4 +1,4 @@
-﻿namespace NotRunescape;
+﻿namespace OsrsTracker;
 
 public class Player
 {
@@ -19,9 +19,30 @@ public class Player
             Inventory[item] = amount;
     }
 
+    public bool DropItem(string item, int amount)
+    {
+        if (!Inventory.ContainsKey(item) || Inventory[item] < amount)
+        {
+            return false;
+        }
+
+        Inventory[item] -= amount;
+        if (Inventory[item] <= 0)
+        {
+            Inventory.Remove(item);
+        }
+        return true;
+    }
+
     public void PrintInventory()
     {
         Console.WriteLine("\n--- Inventory ---");
+        if (Inventory.Count == 0)
+        {
+            Console.WriteLine("Your inventory is empty.");
+            return;
+        }
+
         foreach (var item in Inventory)
         {
             Console.WriteLine($"- {item.Key}: {item.Value}");
